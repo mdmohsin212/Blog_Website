@@ -1,29 +1,59 @@
-{% extends "base.html" %} {% block title %}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
 <title>Home</title>
-{% endblock title %} {% block content %}
+{% endblock title %}
+{% block content %}
 
-<div class="d-flex flex-wrap justify-content-center p-5">
-  {% for i in data %}
-  <div class="col-4 p-2">
-    <div class="card mx-2">
-      <div class="card-body">
-        <h5 class="card-title">{{i.title}}</h5>
-        <p class="card-text">
-          {{i.content}}
-        </p>
-        <p>Author : <b>{{i.author.name}}</b></p>
-        <p>Category : 
-            {% for j in i.catagory.all %}
-              <button class="btn btn-primary btn-sm m-1" disabled>{{j.name}}</button>
-            {% endfor %}
-        </p>
-        <a href="{% url 'edit_post' i.id %}" class="btn btn-warning">Edit</a>
-        <a href="{% url 'delete_post' i.id %}" class="btn btn-danger">Delete</a>
-        <!-- my name -->
+<div class="d-flex flex-wrap px-5 pt-4 align-items-center">
+  <div class="col-6">
+    <h1>Welcome To Django Blog</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus debitis consectetur sunt, quas placeat nulla. Corrupti facere quaerat optio inventore eveniet ut amet, adipisci similique sint explicabo dolorum, velit quod harum quos saepe asperiores. Saepe illum omnis perferendis mollitia at sint qui quam fugit, maxime assumenda dolorem fugiat voluptatem rerum officiis expedita, obcaecati dicta optio quibusdam, deleniti nisi vero dolore. Reiciendis officiis et fugiat veniam corporis? Quam debitis cupiditate odio, dolorum iste mollitia? Porro ut illo ratione tenetur est. Iure, enim. Harum voluptatum a aperiam obcaecati ipsa totam illo repudiandae unde rem, nostrum eligendi voluptas est in asperiores nihil aspernatur.</p>
+  </div>
+  <div class="col-6 p-5">
+    <img src="{% static 'home.png' %}" alt="">
+  </div>
+</div>
+
+<div class="d-flex flex-wrap px-3 p-4">
+<div class="col-2 bg-white p-3 rounded">
+  <h5>All Categories</h5>
+    {% for i in catagory %}
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="category" id="{{i.id}}">
+    <label class="form-check-label" for="{{i.id}}">
+      <a href="{% url "category_wise_post" i.slug %}" class="text-decoration-none text-dark">{{i}}</a>
+    </label>
+  </div>
+    {% endfor %}
+</div>
+
+<div class="col-10 p-3">
+  <h4 class=" w-50 m-auto">{{data | length}} results found</h4>
+  <div class="d-flex flex-wrap pt-5">
+    {% for i in data %}
+    <div class="col-4 p-2">
+      <div class="card mx-2">
+        <div class="card-body">
+          <h5 class="card-title">{{i.title}}</h5>
+          <p class="card-text">
+            {{i.content}}
+          </p>
+          <p>Author : <b>{{i.author.first_name}} {{i.author.last_name}}</b></p>
+          <p>Category : 
+              {% for j in i.catagory.all %}
+                <button class="btn btn-primary btn-sm m-1" disabled>{{j.name}}</button>
+              {% endfor %}
+          </p>
+          <a href="{% url 'edit_post' i.id %}" class="btn btn-warning">Edit</a>
+          <a href="{% url 'delete_post' i.id %}" class="btn btn-danger">Delete</a>
+          <!-- my name -->
+        </div>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+</div>
 </div>
 
 {% endblock content %}
